@@ -6,21 +6,41 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 /// @title SimpleSwap
 /// @notice Implements basic functionality similar to Uniswap for token swapping and liquidity management
+/// @dev Users can provide liquidity, remove it, or perform token swaps. LP tokens are issued to represent shares.
 contract SimpleSwap is ERC20 {
-    uint private constant FEE_PERCENT = 3; // 0.3% fee (3/1000)
+    /// @dev Fee applied to swaps, represented as parts per thousand (3 = 0.3%)
+    uint private constant FEE_PERCENT = 3;
 
+    /// @notice Address of token A in the pair
     address public tokenA;
+
+    /// @notice Address of token B in the pair
     address public tokenB;
 
+    /// @notice Reserve of token A
     uint public reserveA;
+
+    /// @notice Reserve of token B
     uint public reserveB;
 
+    /// @notice Initializes the contract with token pair
+    /// @param _tokenA Address of token A
+    /// @param _tokenB Address of token B
     constructor(address _tokenA, address _tokenB) ERC20("Simple LP Token", "SLP") {
         tokenA = _tokenA;
         tokenB = _tokenB;
     }
 
-    /// @notice Add liquidity to the pool
+    /// @notice Adds liquidity to the pool and mints LP tokens
+    /// @param amountADesired Desired amount of token A
+    /// @param amountBDesired Desired amount of token B
+    /// @param amountAMin Minimum amount of token A to accept
+    /// @param amountBMin Minimum amount of token B to accept
+    /// @param to Recipient of LP tokens
+    /// @param deadline Expiration timestamp
+    /// @return amountA Final amount of token A added
+    /// @return amountB Final amount of token B added
+    /// @return liquidity Amount of LP tokens minted
     function addLiquidity(
         uint amountADesired,
         uint amountBDesired,
@@ -61,7 +81,14 @@ contract SimpleSwap is ERC20 {
         reserveB += amountB;
     }
 
-    /// @notice Remove liquidity from the pool
+    /// @notice Removes liquidity and returns tokens to the user
+    /// @param liquidity Amount of LP tokens to burn
+    /// @param amountAMin Minimum amount of token A to return
+    /// @param amountBMin Minimum amount of token B to return
+    /// @param to Recipient of the tokens
+    /// @param deadline Expiration timestamp
+    /// @return amountA Amount of token A returned
+    /// @return amountB Amount of token B returned
     function removeLiquidity(
         uint liquidity,
         uint amountAMin,
@@ -87,7 +114,13 @@ contract SimpleSwap is ERC20 {
         reserveB -= amountB;
     }
 
-    /// @notice Swap tokens along a path (A -> B or B -> A)
+    /// @notice Swaps a fixed amount of input tokens for output tokens
+    /// @param amountIn Amount of input tokens to swap
+    /// @param amountOutMin Minimum output tokens acceptable
+    /// @param path Array with [inputToken, outputToken]
+    /// @param to Address to send output tokens to
+    /// @param deadline Expiration timestamp
+    /// @return amounts Array with [amountIn, amountOut]
     function swapExactTokensForTokens(
         uint amountIn,
         uint amountOutMin,
@@ -121,12 +154,15 @@ contract SimpleSwap is ERC20 {
             reserveA -= amountOut;
         }
 
-        amounts = new uint[](2);
+        amounts = new uint ;
         amounts[0] = amountIn;
         amounts[1] = amountOut;
     }
 
-    /// @notice Get the price of tokenA in terms of tokenB
+    /// @notice Returns the price of tokenA in terms of tokenB or vice versa
+    /// @param _tokenA Address of base token
+    /// @param _tokenB Address of quote token
+    /// @return price Current price as a uint with 18 decimals
     function getPrice(address _tokenA, address _tokenB) external view returns (uint price) {
         require((_tokenA == tokenA && _tokenB == tokenB) || (_tokenA == tokenB && _tokenB == tokenA), "Invalid pair");
 
@@ -137,7 +173,11 @@ contract SimpleSwap is ERC20 {
         }
     }
 
-    /// @notice Get amount of tokens out for a given input and reserves
+    /// @notice Calculates how many tokens will be received in a swap
+    /// @param amountIn Amount of input tokens
+    /// @param reserveIn Reserve of input token
+    /// @param reserveOut Reserve of output token
+    /// @return amountOut Calculated output amount
     function getAmountOut(uint amountIn, uint reserveIn, uint reserveOut) public pure returns (uint amountOut) {
         require(amountIn > 0, "Insufficient input");
         require(reserveIn > 0 && reserveOut > 0, "Insufficient liquidity");
@@ -145,12 +185,12 @@ contract SimpleSwap is ERC20 {
         amountOut = (amountIn * reserveOut) / (reserveIn + amountIn);
     }
 
-    /// @notice Returns the minimum of two numbers
+    /// @notice Returns the smaller of two numbers
     function min(uint x, uint y) private pure returns (uint) {
         return x < y ? x : y;
     }
 
-    /// @notice Calculates square root using Babylonian method
+    /// @notice Calculates square root using the Babylonian method
     function sqrt(uint y) private pure returns (uint z) {
         if (y > 3) {
             z = y;
