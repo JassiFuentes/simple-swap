@@ -107,7 +107,7 @@ function getAmountOut(uint amountIn, uint reserveIn, uint reserveOut) external p
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/tu-usuario/simple-swap.git
+git clone https://github.com/Jassifuentes/simple-swap.git
 cd simple-swap
 ```
 
