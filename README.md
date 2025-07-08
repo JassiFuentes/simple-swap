@@ -14,19 +14,6 @@ The goal is to simulate a decentralized exchange without relying on the Uniswap 
 
 ---
 
-## ✅ Deployment Details
-
-- ✅ **Contract deployed at:** [0x6DE417A3BEC8dcb251Ecc7342af289Cc34940985](https://sepolia.etherscan.io/address/0x6DE417A3BEC8dcb251Ecc7342af289Cc34940985#code)
-- ✅ **Network:** Sepolia Testnet
-- ✅ **Verified on Etherscan:** Yes
-- ✅ **Constructor parameters:**
-  - `tokenA`: 0x2230b55ef3237d5c21909d2f0868e34820e50c14
-  - `tokenB`: 0x68194a729c2450ad26072b3d33ada07b5ba8c940
-
----
-
-## 🧠 Functionalities
-
 ### 1️⃣ Add Liquidity
 
 ```solidity
@@ -139,27 +126,6 @@ npx hardhat verify --network sepolia 0xYourContractAddress tokenA tokenB
 ```
 
 ---
-
-## 📁 File Structure
-```
-simple-swap/
-├── contracts/
-│   └── SimpleSwap.sol
-├── scripts/
-│   └── deploy.js
-├── .env.example
-├── hardhat.config.js
-├── README.md
-```
-.env file with:
-
-SEPOLIA_RPC_URL
-
-PRIVATE_KEY
-
-ETHERSCAN_API_KEY
----
-
 ## ✅ Comments and Best Practices
 
 - ✅ NatSpec comments in English throughout the contract
@@ -177,13 +143,54 @@ ETHERSCAN_API_KEY
 
 ---
 
-## 💯 Final Notes
+## ✅ Contratos Desplegados
 
-The contract was fully implemented, tested, deployed, and verified, following all requirements of the final project. Every function was documented and coded cleanly, with an emphasis on readability, security, and performance.
+- **SimpleSwap**:  
+  [`0x4AB791880D51CD6A8db850fB14EbB736eCaC12a6`](https://sepolia.etherscan.io/address/0x4AB791880D51CD6A8db850fB14EbB736eCaC12a6#code) (Verificado)
+
+- **Token A (ERC20 personalizado)**:  
+  [`0x035d020fFe37b89fB88A9d3eC0bDBc028Dff7848`](https://sepolia.etherscan.io/address/0x035d020fFe37b89fB88A9d3eC0bDBc028Dff7848)
+
+- **Token B (ERC20 personalizado)**:  
+  [`0x77AacFD77b43D11313F0ac31A5f6e340aEd16326`](https://sepolia.etherscan.io/address/0x77AacFD77b43D11313F0ac31A5f6e340aEd16326)
 
 ---
- **link al contrato verificado en Etherscan**
-https://sepolia.etherscan.io/address/0x6DE417A3BEC8dcb251Ecc7342af289Cc34940985
-**Author:** Jassira Ramos  
-**Bootcamp:** Ethereum Developer - Módulo 3
 
+## ⚙️ Scripts disponibles
+
+Todos los scripts están en la carpeta `/scripts` y se ejecutan con:
+
+```bash
+npx hardhat run scripts/<nombre_del_script>.js --network sepolia
+```
+
+### 📌 Principales scripts
+
+| Script                 | Descripción |
+|------------------------|-------------|
+| `deploy.js`            | Despliega el contrato SimpleSwap |
+| `approveToken.js`      | Aprueba tokens A y B para el contrato |
+| `addLiquidity.js`      | Agrega liquidez al pool |
+| `checkBalances.js`     | Muestra balances de tokens A, B y SLP del usuario |
+| `checkReserves.js`     | Muestra balances dentro del contrato SimpleSwap |
+| `getPrice.js`          | Consulta el precio entre los tokens |
+| `deployVerifier.js`    | Despliega el contrato verificador personalizado |
+| `callVerifier.js`      | Ejecuta la verificación del contrato oficial |
+
+---
+
+## 📩 Ejecución del contrato verificador
+
+✅ Se ejecutó el contrato verificador oficial  
+[`0x9f8f02dab384dddf1591c3366069da3fb0018220`](https://sepolia.etherscan.io/address/0x9f8f02dab384dddf1591c3366069da3fb0018220#code)  
+con los datos correctos y **se recibió confirmación exitosa** de la transacción:
+
+```
+📨 Transacción enviada: 0x7c7185a7fab5b69f197322a6b3df5952acf8bb74203de6db435d3ebcd83eca42
+✅ Verificación exitosa
+```
+
+## ✍️ Autor
+
+- Nombre: **Jassira Ramos**
+- Fecha de entrega: 08/07/2025

@@ -154,9 +154,10 @@ contract SimpleSwap is ERC20 {
             reserveA -= amountOut;
         }
 
-        amounts = new uint ;
+        amounts = new uint[](2) ;
         amounts[0] = amountIn;
         amounts[1] = amountOut;
+
     }
 
     /// @notice Returns the price of tokenA in terms of tokenB or vice versa
